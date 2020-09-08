@@ -5,7 +5,7 @@
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2020-08-30T02:33:40.250Z
+ * Date: 2020-09-08T01:49:50.461Z
  */
 
 function _typeof(obj) {
@@ -375,7 +375,7 @@ var DATA_ACTION = "".concat(NAMESPACE, "Action"); // RegExps
 
 var REGEXP_SPACES = /\s\s*/; // Misc
 
-var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical'];
+var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'delete'];
 
 /**
  * Check if the given value is a string.
@@ -1347,6 +1347,9 @@ var handlers = {
         this.prev(options.loop);
         break;
 
+      case 'delete':
+        break;
+
       case 'play':
         this.play(options.fullscreen);
         break;
@@ -2032,6 +2035,7 @@ var methods = {
     this.view(index);
     return this;
   },
+  delete: function _delete() {},
 
   /**
    * View the next image
@@ -2593,17 +2597,18 @@ var methods = {
     this.length = images.length;
 
     if (this.ready) {
-      var indexes = [];
+      var changedIndexes = [];
       forEach(this.items, function (item, i) {
         var img = item.querySelector('img');
         var image = images[i];
 
         if (image && img) {
-          if (image.src !== img.src) {
-            indexes.push(i);
+          if (image.src !== img.src // Title changed (#408)
+          || image.alt !== img.alt) {
+            changedIndexes.push(i);
           }
         } else {
-          indexes.push(i);
+          changedIndexes.push(i);
         }
       });
       setStyle(this.list, {
@@ -2614,12 +2619,13 @@ var methods = {
       if (this.isShown) {
         if (this.length) {
           if (this.viewed) {
-            var index = indexes.indexOf(this.index);
+            var changedIndex = changedIndexes.indexOf(this.index);
 
-            if (index >= 0) {
+            if (changedIndex >= 0) {
               this.viewed = false;
-              this.view(Math.max(this.index - (index + 1), 0));
+              this.view(Math.max(Math.min(this.index - changedIndex, this.length - 1), 0));
             } else {
+              // Reactivate the current viewing item after reset the list.
               addClass(this.items[this.index], CLASS_ACTIVE);
             }
           }

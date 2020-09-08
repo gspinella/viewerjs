@@ -11,11 +11,12 @@
 .viewer-flip-vertical,
 .viewer-fullscreen,
 .viewer-fullscreen-exit,
-.viewer-close {
+.viewer-close,
+.viewer-delete {
   &::before {
     background-image: url('../images/icons.png');
     background-repeat: no-repeat;
-    background-size: 280px;
+    background-size: 300px;
     color: transparent;
     display: block;
     font-size: 0;
@@ -93,6 +94,11 @@
 .viewer-close::before {
   background-position: -260px 0;
   content: 'Close';
+}
+
+.viewer-delete::before {
+  background-position: -280px 0;
+  content: 'Delete';
 }
 
 .viewer-container {

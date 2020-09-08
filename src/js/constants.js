@@ -72,4 +72,5 @@ export const BUTTONS = [
   'rotate-right',
   'flip-horizontal',
   'flip-vertical',
+  'delete',
 ];

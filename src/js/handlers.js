@@ -85,6 +85,9 @@ export default {
         this.prev(options.loop);
         break;
 
+      case 'delete':
+        break;
+
       case 'play':
         this.play(options.fullscreen);
         break;

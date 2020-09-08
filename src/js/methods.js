@@ -349,6 +349,8 @@ export default {
     return this;
   },
 
+  delete() {},
+
   /**
    * View the next image
    * @param {boolean} [loop=false] - Indicate if view the first one
